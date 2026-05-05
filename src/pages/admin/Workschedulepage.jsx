@@ -40,11 +40,17 @@ const WorkSchedulePage = () => {
   // ================= API =================
   const api = axios.create({ baseURL: BASE });
 
-  api.interceptors.request.use((config) => {
-    const token = getToken();
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-    return config;
-  });
+ api.interceptors.request.use((config) => {
+  const token = getToken();
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  config.headers["ngrok-skip-browser-warning"] = "true";
+
+  return config;
+});
 
   // ================= USERS =================
   useEffect(() => {

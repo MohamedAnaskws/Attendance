@@ -38,18 +38,25 @@ const CombinedApprovalsPage = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true", // ✅ ADD HERE
       },
     });
 
     instance.interceptors.request.use((config) => {
       const token = getToken();
-      if (token) config.headers.Authorization = `Bearer ${token}`;
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+
+      // ✅ ensure it always exists even if overwritten
+      config.headers["ngrok-skip-browser-warning"] = "true";
+
       return config;
     });
 
     return instance;
   }, [BASE]);
-
   // ================= FETCH USERS =================
   useEffect(() => {
     const fetchUsers = async () => {
@@ -110,7 +117,7 @@ const CombinedApprovalsPage = () => {
       const rejectedData = r.data?.data || [];
 
       const filteredPending = pendingData.filter(
-        (item) => Number(item.current_step) === Number(allowedStep)
+        (item) => Number(item.current_step) === Number(allowedStep),
       );
 
       setPending(filteredPending);
@@ -134,9 +141,7 @@ const CombinedApprovalsPage = () => {
     {
       title: "Employee",
       render: (_, r) => (
-        <div style={{ fontWeight: 600 }}>
-          {getEmployeeName(r)}
-        </div>
+        <div style={{ fontWeight: 600 }}>{getEmployeeName(r)}</div>
       ),
     },
 
@@ -241,8 +246,7 @@ const CombinedApprovalsPage = () => {
                 onClick={async () => {
                   const u = updates[record.id];
 
-                  if (!u?.status)
-                    return message.warning("Select action");
+                  if (!u?.status) return message.warning("Select action");
 
                   if (!u?.leave_payment_type)
                     return message.warning("Select payment");
@@ -276,28 +280,48 @@ const CombinedApprovalsPage = () => {
       key: "1",
       label: `Pending (${pending.length})`,
       children: (
-        <Table rowKey="id" columns={columns(true)} dataSource={pending} loading={loading} />
+        <Table
+          rowKey="id"
+          columns={columns(true)}
+          dataSource={pending}
+          loading={loading}
+        />
       ),
     },
     {
       key: "2",
       label: `Processing (${processing.length})`,
       children: (
-        <Table rowKey="id" columns={columns(false)} dataSource={processing} loading={loading} />
+        <Table
+          rowKey="id"
+          columns={columns(false)}
+          dataSource={processing}
+          loading={loading}
+        />
       ),
     },
     {
       key: "3",
       label: `Approved (${approved.length})`,
       children: (
-        <Table rowKey="id" columns={columns(false)} dataSource={approved} loading={loading} />
+        <Table
+          rowKey="id"
+          columns={columns(false)}
+          dataSource={approved}
+          loading={loading}
+        />
       ),
     },
     {
       key: "4",
       label: `Rejected (${rejected.length})`,
       children: (
-        <Table rowKey="id" columns={columns(false)} dataSource={rejected} loading={loading} />
+        <Table
+          rowKey="id"
+          columns={columns(false)}
+          dataSource={rejected}
+          loading={loading}
+        />
       ),
     },
   ];

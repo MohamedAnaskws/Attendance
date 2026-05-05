@@ -53,6 +53,7 @@ function HolidayPage() {
     () => ({
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
     }),
     [token]
   );

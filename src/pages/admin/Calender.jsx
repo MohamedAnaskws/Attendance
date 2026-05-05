@@ -7,15 +7,13 @@ import {
   UserOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
-  CalendarOutlined,
   RocketOutlined,
   GiftOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
 
 // ================= HELPERS =================
-const getDaysInMonth = (year, month) =>
-  new Date(year, month + 1, 0).getDate();
+const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
 const getDayName = (year, month, day) =>
   new Date(year, month, day).toLocaleDateString("en-US", {
@@ -39,7 +37,6 @@ const getStatusStyle = (status) => {
       return "bg-gray-50 text-gray-400 border-gray-200";
   }
 };
-
 
 const getStatusLabel = (status) => {
   switch (status) {
@@ -70,7 +67,7 @@ export default function AdminCalendar() {
 
   const days = useMemo(
     () => Array.from({ length: daysInMonth }, (_, i) => i + 1),
-    [daysInMonth]
+    [daysInMonth],
   );
 
   // ================= FETCH USERS =================
@@ -79,6 +76,7 @@ export default function AdminCalendar() {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
+          "ngrok-skip-browser-warning": "true",
         },
       });
       const data = await res.json();
@@ -98,8 +96,9 @@ export default function AdminCalendar() {
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
+            "ngrok-skip-browser-warning": "true",
           },
-        }
+        },
       );
 
       const data = await res.json();
@@ -121,17 +120,14 @@ export default function AdminCalendar() {
     return user ? `${user.first_name} ${user.last_name}` : `User ${id}`;
   };
 
-
   return (
     <MainLayout>
       <div className="p-6 bg-gray-50 min-h-screen">
-
         {/* HEADER */}
         <div className="mb-6 flex justify-between items-start">
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-800">
-            
-            Calendar
+              Calendar
             </h1>
             <p className="text-gray-500 text-sm mt-1">
               {date.format("MMMM YYYY")} - Monthly employee attendance overview
@@ -142,33 +138,44 @@ export default function AdminCalendar() {
             picker="month"
             value={date}
             onChange={(val) => val && setDate(val)}
-            disabledDate={(current) => current && current > dayjs().endOf("month")}
+            disabledDate={(current) =>
+              current && current > dayjs().endOf("month")
+            }
             format="MMMM YYYY"
           />
         </div>
 
-   
         {/* LEGEND */}
         <div className="bg-white rounded-lg border border-gray-200 p-3 mb-6 flex flex-wrap gap-4 text-xs">
           <div className="flex items-center gap-2">
             <CheckCircleOutlined className="text-green-600" />
-            <span><strong>P</strong> = Present</span>
+            <span>
+              <strong>P</strong> = Present
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <CloseCircleOutlined className="text-red-600" />
-            <span><strong>A</strong> = Absent</span>
+            <span>
+              <strong>A</strong> = Absent
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <RocketOutlined className="text-blue-600" />
-            <span><strong>V</strong> = Vacation</span>
+            <span>
+              <strong>V</strong> = Vacation
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <GiftOutlined className="text-yellow-600" />
-            <span><strong>H</strong> = Holiday </span>
+            <span>
+              <strong>H</strong> = Holiday{" "}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <FileTextOutlined className="text-purple-600" />
-            <span><strong>MP</strong> = Memo Present (Partial day with hours)</span>
+            <span>
+              <strong>MP</strong> = Memo Present (Partial day with hours)
+            </span>
           </div>
         </div>
 
@@ -188,7 +195,10 @@ export default function AdminCalendar() {
                       <UserOutlined className="mr-2" /> Employee
                     </th>
                     {days.map((day) => (
-                      <th key={day} className="px-2 py-3 text-center min-w-[65px]">
+                      <th
+                        key={day}
+                        className="px-2 py-3 text-center min-w-[65px]"
+                      >
                         <div className="font-semibold text-gray-700">{day}</div>
                         <div className="text-xs text-gray-400 mt-0.5">
                           {getDayName(year, month, day)}
@@ -205,7 +215,10 @@ export default function AdminCalendar() {
                 <tbody>
                   {report.length === 0 ? (
                     <tr>
-                      <td colSpan={days.length + 2} className="text-center py-12 text-gray-400">
+                      <td
+                        colSpan={days.length + 2}
+                        className="text-center py-12 text-gray-400"
+                      >
                         No attendance data available
                       </td>
                     </tr>
@@ -214,7 +227,10 @@ export default function AdminCalendar() {
                       let absentCount = 0;
 
                       return (
-                        <tr key={emp.employee_id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
+                        <tr
+                          key={emp.employee_id}
+                          className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}
+                        >
                           {/* USER CELL */}
                           <td className="sticky left-0 bg-inherit px-6 py-2 font-medium text-gray-800 border-r border-gray-100 min-w-[220px]">
                             {getUserName(emp.employee_id)}
@@ -231,12 +247,18 @@ export default function AdminCalendar() {
                             return (
                               <td key={day} className="px-1 py-2 text-center">
                                 {status !== "-" ? (
-                                  <Tooltip title={`${getStatusLabel(status)}${status === 'MP' ? ` - ${workedHours} hours worked` : ''}`}>
-                                    <div className={`inline-flex items-center justify-center min-w-[50px] px-2 py-1 rounded-md text-xs font-semibold border ${getStatusStyle(status)} cursor-help transition-all hover:scale-105`}>
+                                  <Tooltip
+                                    title={`${getStatusLabel(status)}${status === "MP" ? ` - ${workedHours} hours worked` : ""}`}
+                                  >
+                                    <div
+                                      className={`inline-flex items-center justify-center min-w-[50px] px-2 py-1 rounded-md text-xs font-semibold border ${getStatusStyle(status)} cursor-help transition-all hover:scale-105`}
+                                    >
                                       {status === "MP" ? (
                                         <div className="flex flex-col items-center">
                                           <span>{status}</span>
-                                          <span className="text-[9px]">{workedHours}h</span>
+                                          <span className="text-[9px]">
+                                            {workedHours}h
+                                          </span>
                                         </div>
                                       ) : (
                                         <span>{status}</span>

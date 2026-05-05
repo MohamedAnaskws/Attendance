@@ -38,8 +38,9 @@ function SalaryProcessPage() {
           headers: {
             Authorization: `Bearer ${getToken()}`,
             Accept: "application/json",
+            "ngrok-skip-browser-warning": "true",
           },
-        }
+        },
       );
 
       const data = await res.json();
@@ -48,9 +49,7 @@ function SalaryProcessPage() {
 
       if (!res.ok) {
         throw new Error(
-          data?.message ||
-          data?.detail ||
-          "Failed to load salary report"
+          data?.message || data?.detail || "Failed to load salary report",
         );
       }
 
@@ -81,17 +80,16 @@ function SalaryProcessPage() {
           headers: {
             Authorization: `Bearer ${getToken()}`,
             Accept: "application/json",
+            "ngrok-skip-browser-warning": "true",
           },
-        }
+        },
       );
 
       const data = await res.json();
 
       if (!res.ok) {
         throw new Error(
-          data?.message ||
-          data?.detail ||
-          "Salary processing failed"
+          data?.message || data?.detail || "Salary processing failed",
         );
       }
 
@@ -177,16 +175,13 @@ function SalaryProcessPage() {
     {
       title: "Final Salary",
       dataIndex: "final_salary",
-      render: (v) => (
-        <Tag color="purple">PKR {v}</Tag>
-      ),
+      render: (v) => <Tag color="purple">PKR {v}</Tag>,
     },
   ];
 
   return (
     <MainLayout>
       <div className="p-6 bg-gray-50 min-h-screen">
-
         {/* HEADER */}
         <Card style={{ borderRadius: 14, marginBottom: 20 }}>
           <Row justify="space-between" align="middle">
@@ -194,9 +189,7 @@ function SalaryProcessPage() {
               <Title level={3} style={{ margin: 0 }}>
                 Salary Report
               </Title>
-              <Text type="secondary">
-                Monthly employee salary breakdown
-              </Text>
+              <Text type="secondary">Monthly employee salary breakdown</Text>
             </div>
 
             <div style={{ display: "flex", gap: 10 }}>
@@ -206,11 +199,7 @@ function SalaryProcessPage() {
                 onChange={(val) => val && setDate(val)}
               />
 
-              <Button
-                type="primary"
-                loading={loading}
-                onClick={processSalary}
-              >
+              <Button type="primary" loading={loading} onClick={processSalary}>
                 Process Salary
               </Button>
             </div>
@@ -220,7 +209,9 @@ function SalaryProcessPage() {
         {/* TABLE */}
         <Card style={{ borderRadius: 14 }}>
           {loading ? (
-            <div style={{ display: "flex", justifyContent: "center", padding: 40 }}>
+            <div
+              style={{ display: "flex", justifyContent: "center", padding: 40 }}
+            >
               <Spin size="large" />
             </div>
           ) : (
@@ -232,7 +223,6 @@ function SalaryProcessPage() {
             />
           )}
         </Card>
-
       </div>
     </MainLayout>
   );

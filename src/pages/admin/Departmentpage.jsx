@@ -45,6 +45,7 @@ const getHeaders = () => ({
   "Content-Type": "application/json",
   Authorization: `Bearer ${getToken()}`,
   "user-id": 1,
+  "ngrok-skip-browser-warning": "true",
 });
 
 function DepartmentsPage() {

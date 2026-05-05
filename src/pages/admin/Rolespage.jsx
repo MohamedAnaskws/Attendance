@@ -26,6 +26,7 @@ function RolesPage() {
       const res = await fetch(BASE, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
+          "ngrok-skip-browser-warning": "true", // Skip ngrok warning page
           "user-id": 1,
         },
       });
@@ -48,9 +49,7 @@ function RolesPage() {
       const values = await form.validateFields();
       setLoading(true);
 
-      const url = editingRole
-        ? `${BASE}/${editingRole.id}`
-        : BASE;
+      const url = editingRole ? `${BASE}/${editingRole.id}` : BASE;
 
       const method = editingRole ? "PUT" : "POST";
 
@@ -58,6 +57,7 @@ function RolesPage() {
         method,
         headers: {
           "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true", // Skip ngrok warning page
           Authorization: `Bearer ${getToken()}`,
           "user-id": 1,
         },
@@ -87,6 +87,7 @@ function RolesPage() {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${getToken()}`,
+          "ngrok-skip-browser-warning": "true", 
           "user-id": 1,
         },
       });
@@ -140,13 +141,14 @@ function RolesPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "true",
             Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify({
             role_id: selectedRole.id,
             action_ids: uniqueActionIds,
           }),
-        }
+        },
       );
 
       if (!res.ok) throw new Error();

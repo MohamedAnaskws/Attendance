@@ -48,9 +48,11 @@ function UsersPage() {
   const loadRoles = async () => {
     try {
       const res = await fetch(`${BASE}/api/roles`, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
+         headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "ngrok-skip-browser-warning": "true",
+        "Content-Type": "application/json"
+      },
       });
 
       const data = await res.json();

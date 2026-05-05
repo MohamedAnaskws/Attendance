@@ -4,7 +4,11 @@ const BASE = `${import.meta.env.VITE_API_URL}/api/users`;
 
 const getAuthHeader = () => {
   const token = getToken();
-  return token ? { Authorization: `Bearer ${token}` } : {};
+
+  return {
+    ...(token && { Authorization: `Bearer ${token}` }),
+    "ngrok-skip-browser-warning": "true"
+  };
 };
 
 // ================= GET USERS =================

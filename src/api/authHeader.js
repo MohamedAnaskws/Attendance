@@ -12,5 +12,6 @@ export const authHeader = () => {
 
   return {
     Authorization: `Bearer ${token}`,
+    "ngrok-skip-browser-warning": "true",
   };
 };

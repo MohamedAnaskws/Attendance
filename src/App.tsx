@@ -16,6 +16,7 @@ import LeavesPage from './pages/admin/LeavesPage';
 import AdminCalendar from './pages/admin/Calender';
 import SalaryProcessPage from './pages/admin/Salaryprocesspage';
 import CalendarPage from './pages/admin/Workschedulepage';
+import ChatLogsPage from './pages/admin/ChatLogsPage'; 
 
 // ── CRM User Pages ────────────────────────────────────
 import UserDashboard from './pages/users/Userspage';
@@ -115,9 +116,12 @@ const App: React.FC = () => {
 
         {/* ── Chat (full page) ───────────────────── */}
         <Route path="/chat" element={<ProtectedRoute routeKey="chat"><ChatLayout /></ProtectedRoute>} />
+           {/* 🆕 CHAT LOGS - Owner only */}
+        <Route path="/chat-log" element={<ProtectedRoute routeKey="chat-logs"><ChatLogsPage /></ProtectedRoute>} />
 
         {/* ── Fallback ───────────────────────────── */}
         <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
 
       {/* Floating chat button visible on all CRM pages */}

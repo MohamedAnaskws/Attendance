@@ -18,6 +18,7 @@ function DashboardPage() {
     const res = await fetch(`${BASE}/api/users`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
+        "ngrok-skip-browser-warning": "true",
         Accept: "application/json",
       },
     });
