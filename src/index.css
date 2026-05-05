@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply m-0 p-0 box-border;
+  }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gray-50;
+  }
+}
+
+/* ─── Scrollbar styling ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ─── Ant Design sidebar menu overrides ─────────────── */
+.ant-menu-item {
+  margin: 6px 10px !important;
+  border-radius: 8px !important;
+  color: #cbd5f5 !important;
+}
+.ant-menu-item:hover {
+  background-color: #1e293b !important;
+  color: #fff !important;
+}
+.ant-menu-item-selected {
+  background: linear-gradient(90deg, #2563eb, #3b82f6) !important;
+  color: #fff !important;
+}
+.ant-menu-item .anticon {
+  color: #94a3b8;
+}
+.ant-menu-item-selected .anticon {
+  color: #fff;
+}
+.ant-menu-submenu-title {
+  color: #94a3b8 !important;
+}
+.ant-menu-submenu-title:hover {
+  color: #fff !important;
+}
+
+/* ─── KPI cards ─────────────────────────────────────── */
+.kpi-modern {
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #f0f2f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+}
+.kpi-modern:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Chat animations ───────────────────────────────── */
+.flex.animate-fadeIn {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+@keyframes fadeIn {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%           { transform: translateY(-10px); }
+}
+
+/* ─── Chat FAB pulse animation ─────────────────────── */
+@keyframes chatPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  70%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
