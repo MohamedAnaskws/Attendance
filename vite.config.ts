@@ -2,11 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-import { cloudflare } from "@cloudflare/vite-plugin";
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), cloudflare()],
+  plugins: [react()],
   
   resolve: {
     alias: {
@@ -43,26 +41,6 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React vendor chunk
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          
-          // UI libraries chunk
-          'vendor-ui': ['antd', '@ant-design/icons'],
-          
-          // State management and utilities chunk
-          'vendor-utils': ['zustand', 'axios', 'date-fns'],
-          
-          // Toast and notifications
-          'vendor-toast': ['react-toastify'],
-          
-          // Everything else
-          'vendor-other': ['@vitejs/plugin-react'],
-        },
-        
-        // Alternative: dynamic chunking based on node_modules
-        // Uncomment this if you prefer automatic chunking
-        /*
         manualChunks(id) {
           if (id.includes('node_modules')) {
             // React ecosystem
@@ -75,21 +53,20 @@ export default defineConfig({
               return 'vendor-ui';
             }
             
-            // State management
-            if (id.includes('zustand') || id.includes('axios')) {
-              return 'vendor-state';
+            // State management and utilities
+            if (id.includes('zustand') || id.includes('axios') || id.includes('date-fns')) {
+              return 'vendor-utils';
             }
             
-            // Utilities
-            if (id.includes('date-fns') || id.includes('lodash')) {
-              return 'vendor-utils';
+            // Toast notifications
+            if (id.includes('react-toastify')) {
+              return 'vendor-toast';
             }
             
             // Default vendor chunk
             return 'vendor';
           }
         },
-        */
         
         // Optimize chunk size
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -118,11 +95,5 @@ export default defineConfig({
       'react-toastify',
       'antd',
     ],
-  },
-  
-  // Define environment variables
-  define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:8000'),
-    'import.meta.env.VITE_WS_URL': JSON.stringify(process.env.VITE_WS_URL || 'ws://localhost:8000'),
   },
 });
